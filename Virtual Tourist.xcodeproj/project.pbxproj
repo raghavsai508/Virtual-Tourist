@@ -7,12 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A60406D120EA94F6009ABFE0 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60406D020EA94F6009ABFE0 /* NetworkManager.swift */; };
+		A60406D320EA9992009ABFE0 /* NetworkManagerConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60406D220EA9992009ABFE0 /* NetworkManagerConvenience.swift */; };
+		A634F42D20EBD8FC00957041 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = A634F42C20EBD8FC00957041 /* .gitignore */; };
 		A67CC11B20DC652F007E4C2D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67CC11A20DC652F007E4C2D /* AppDelegate.swift */; };
-		A67CC11D20DC652F007E4C2D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67CC11C20DC652F007E4C2D /* ViewController.swift */; };
+		A67CC11D20DC652F007E4C2D /* TravelLocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67CC11C20DC652F007E4C2D /* TravelLocationsViewController.swift */; };
 		A67CC12020DC652F007E4C2D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A67CC11E20DC652F007E4C2D /* Main.storyboard */; };
 		A67CC12220DC6532007E4C2D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A67CC12120DC6532007E4C2D /* Assets.xcassets */; };
 		A67CC12520DC6532007E4C2D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A67CC12320DC6532007E4C2D /* LaunchScreen.storyboard */; };
 		A67CC13020DC6532007E4C2D /* Virtual_TouristTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67CC12F20DC6532007E4C2D /* Virtual_TouristTests.swift */; };
+		A67CC13B20DC66D2007E4C2D /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67CC13A20DC66D2007E4C2D /* PhotoAlbumViewController.swift */; };
+		A67CC13E20DC72CC007E4C2D /* TravelAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67CC13D20DC72CC007E4C2D /* TravelAnnotation.swift */; };
+		A67CC14120DC8A94007E4C2D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67CC14020DC8A94007E4C2D /* Constants.swift */; };
+		A67CC14620DE9090007E4C2D /* VirtualTourist.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A67CC14420DE9090007E4C2D /* VirtualTourist.xcdatamodeld */; };
+		A67CC14920DE965B007E4C2D /* Pin+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67CC14820DE965B007E4C2D /* Pin+Extensions.swift */; };
+		A67CC14B20DE967C007E4C2D /* Photo+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67CC14A20DE967C007E4C2D /* Photo+Extensions.swift */; };
+		A67CC14D20DEB4B7007E4C2D /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67CC14C20DEB4B7007E4C2D /* DataController.swift */; };
+		A67CC14F20DEBFF0007E4C2D /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67CC14E20DEBFF0007E4C2D /* PhotoCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,9 +37,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A60406D020EA94F6009ABFE0 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		A60406D220EA9992009ABFE0 /* NetworkManagerConvenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerConvenience.swift; sourceTree = "<group>"; };
+		A634F42C20EBD8FC00957041 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		A67CC11720DC652F007E4C2D /* Virtual Tourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Tourist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A67CC11A20DC652F007E4C2D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A67CC11C20DC652F007E4C2D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A67CC11C20DC652F007E4C2D /* TravelLocationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelLocationsViewController.swift; sourceTree = "<group>"; };
 		A67CC11F20DC652F007E4C2D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A67CC12120DC6532007E4C2D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A67CC12420DC6532007E4C2D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -36,6 +50,14 @@
 		A67CC12B20DC6532007E4C2D /* Virtual TouristTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Virtual TouristTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A67CC12F20DC6532007E4C2D /* Virtual_TouristTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Virtual_TouristTests.swift; sourceTree = "<group>"; };
 		A67CC13120DC6532007E4C2D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A67CC13A20DC66D2007E4C2D /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
+		A67CC13D20DC72CC007E4C2D /* TravelAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelAnnotation.swift; sourceTree = "<group>"; };
+		A67CC14020DC8A94007E4C2D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A67CC14520DE9090007E4C2D /* VirtualTourist.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VirtualTourist.xcdatamodel; sourceTree = "<group>"; };
+		A67CC14820DE965B007E4C2D /* Pin+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pin+Extensions.swift"; sourceTree = "<group>"; };
+		A67CC14A20DE967C007E4C2D /* Photo+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo+Extensions.swift"; sourceTree = "<group>"; };
+		A67CC14C20DEB4B7007E4C2D /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		A67CC14E20DEBFF0007E4C2D /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +81,7 @@
 		A67CC10E20DC652F007E4C2D = {
 			isa = PBXGroup;
 			children = (
+				A634F42C20EBD8FC00957041 /* .gitignore */,
 				A67CC11920DC652F007E4C2D /* Virtual Tourist */,
 				A67CC12E20DC6532007E4C2D /* Virtual TouristTests */,
 				A67CC11820DC652F007E4C2D /* Products */,
@@ -77,8 +100,12 @@
 		A67CC11920DC652F007E4C2D /* Virtual Tourist */ = {
 			isa = PBXGroup;
 			children = (
+				A67CC14020DC8A94007E4C2D /* Constants.swift */,
+				A67CC13F20DC76D3007E4C2D /* Album */,
+				A67CC13C20DC6751007E4C2D /* Map */,
+				A67CC14320DE905F007E4C2D /* Model */,
+				A67CC14220DE8C4D007E4C2D /* Network */,
 				A67CC11A20DC652F007E4C2D /* AppDelegate.swift */,
-				A67CC11C20DC652F007E4C2D /* ViewController.swift */,
 				A67CC11E20DC652F007E4C2D /* Main.storyboard */,
 				A67CC12120DC6532007E4C2D /* Assets.xcassets */,
 				A67CC12320DC6532007E4C2D /* LaunchScreen.storyboard */,
@@ -94,6 +121,52 @@
 				A67CC13120DC6532007E4C2D /* Info.plist */,
 			);
 			path = "Virtual TouristTests";
+			sourceTree = "<group>";
+		};
+		A67CC13C20DC6751007E4C2D /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				A67CC11C20DC652F007E4C2D /* TravelLocationsViewController.swift */,
+				A67CC13D20DC72CC007E4C2D /* TravelAnnotation.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		A67CC13F20DC76D3007E4C2D /* Album */ = {
+			isa = PBXGroup;
+			children = (
+				A67CC13A20DC66D2007E4C2D /* PhotoAlbumViewController.swift */,
+				A67CC14E20DEBFF0007E4C2D /* PhotoCollectionViewCell.swift */,
+			);
+			path = Album;
+			sourceTree = "<group>";
+		};
+		A67CC14220DE8C4D007E4C2D /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				A60406D020EA94F6009ABFE0 /* NetworkManager.swift */,
+				A60406D220EA9992009ABFE0 /* NetworkManagerConvenience.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		A67CC14320DE905F007E4C2D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A67CC14720DE9605007E4C2D /* Managed Object Extensions */,
+				A67CC14420DE9090007E4C2D /* VirtualTourist.xcdatamodeld */,
+				A67CC14C20DEB4B7007E4C2D /* DataController.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A67CC14720DE9605007E4C2D /* Managed Object Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A67CC14820DE965B007E4C2D /* Pin+Extensions.swift */,
+				A67CC14A20DE967C007E4C2D /* Photo+Extensions.swift */,
+			);
+			path = "Managed Object Extensions";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,6 +250,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A634F42D20EBD8FC00957041 /* .gitignore in Resources */,
 				A67CC12520DC6532007E4C2D /* LaunchScreen.storyboard in Resources */,
 				A67CC12220DC6532007E4C2D /* Assets.xcassets in Resources */,
 				A67CC12020DC652F007E4C2D /* Main.storyboard in Resources */,
@@ -197,8 +271,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A67CC11D20DC652F007E4C2D /* ViewController.swift in Sources */,
+				A67CC14120DC8A94007E4C2D /* Constants.swift in Sources */,
+				A67CC14F20DEBFF0007E4C2D /* PhotoCollectionViewCell.swift in Sources */,
+				A67CC11D20DC652F007E4C2D /* TravelLocationsViewController.swift in Sources */,
+				A67CC14920DE965B007E4C2D /* Pin+Extensions.swift in Sources */,
+				A60406D320EA9992009ABFE0 /* NetworkManagerConvenience.swift in Sources */,
+				A60406D120EA94F6009ABFE0 /* NetworkManager.swift in Sources */,
+				A67CC14620DE9090007E4C2D /* VirtualTourist.xcdatamodeld in Sources */,
+				A67CC14D20DEB4B7007E4C2D /* DataController.swift in Sources */,
 				A67CC11B20DC652F007E4C2D /* AppDelegate.swift in Sources */,
+				A67CC13E20DC72CC007E4C2D /* TravelAnnotation.swift in Sources */,
+				A67CC14B20DE967C007E4C2D /* Photo+Extensions.swift in Sources */,
+				A67CC13B20DC66D2007E4C2D /* PhotoAlbumViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,7 +442,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Virtual Tourist/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -366,6 +451,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.swiftentusiast.Virtual-Tourist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -375,7 +461,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Virtual Tourist/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -383,6 +470,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.swiftentusiast.Virtual-Tourist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -459,6 +547,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A67CC14420DE9090007E4C2D /* VirtualTourist.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A67CC14520DE9090007E4C2D /* VirtualTourist.xcdatamodel */,
+			);
+			currentVersion = A67CC14520DE9090007E4C2D /* VirtualTourist.xcdatamodel */;
+			path = VirtualTourist.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = A67CC10F20DC652F007E4C2D /* Project object */;
 }
