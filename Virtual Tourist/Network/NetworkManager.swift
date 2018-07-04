@@ -50,7 +50,8 @@ class NetworkManager: NSObject {
         
         return task
     }
-
+    
+    
     private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
         
         var parsedResult: AnyObject! = nil

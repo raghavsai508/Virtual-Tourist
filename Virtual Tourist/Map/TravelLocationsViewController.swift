@@ -80,7 +80,8 @@ class TravelLocationsViewController: UIViewController, NSFetchedResultsControlle
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == photoAlbumIdentifier {
             let photoAlbumViewController = segue.destination as! PhotoAlbumViewController
-            photoAlbumViewController.travelPin = sender as! Pin
+            photoAlbumViewController.dataController = dataController
+            photoAlbumViewController.travelAnnotation = sender as! TravelAnnotation
         }
     }
 }
@@ -88,12 +89,8 @@ class TravelLocationsViewController: UIViewController, NSFetchedResultsControlle
 extension TravelLocationsViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        if let travelAnnotation = view.annotation as? TravelAnnotation, let pins = fetchedResultsController.fetchedObjects {
-            let filteredPins = pins.filter { $0.objectID.uriRepresentation().absoluteString == travelAnnotation.travelId }
-            if filteredPins.count > 0 {
-                let pin = filteredPins[0]
-                performSegue(withIdentifier: photoAlbumIdentifier, sender: pin)
-            }
+        if let travelAnnotation = view.annotation as? TravelAnnotation {
+            performSegue(withIdentifier: photoAlbumIdentifier, sender: travelAnnotation)
         }
     }
     

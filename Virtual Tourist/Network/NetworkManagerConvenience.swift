@@ -7,10 +7,11 @@
 //
 
 import Foundation
+import UIKit
 
 extension NetworkManager {
     
-    func getPhotosFor(latitude: Double, longitude: Double, completionHandlerForPhotos: @escaping () -> Void) -> URLSessionTask? {
+    func getPhotosFor(latitude: Double, longitude: Double, completionHandlerForPhotos: @escaping (_ photoURLs: [URL]?, _ error: NSError?) -> Void) -> URLSessionTask? {
         
         let methodParameters = [
             Constants.FlickrParameterKeys.Method: Constants.FlickrParameterValues.SearchMethod,
@@ -25,9 +26,28 @@ extension NetworkManager {
         
         let request = URLRequest(url: flickrURLFromParameters(methodParameters))
         return taskForURLRequest(request) { (dataObject, error) in
-            print(dataObject)
+            if error != nil {
+                completionHandlerForPhotos(nil,error)
+            } else {
+                var flickrPhotoURLs:[URL] = []
+                if let photos = dataObject?[Constants.FlickrResponseKeys.Photos] as? [String: AnyObject], let photosArray = photos[Constants.FlickrResponseKeys.Photo] as? [[String: AnyObject]] {
+                    for photoObject in photosArray {
+                        let photoURL = URL(string: photoObject[Constants.FlickrResponseKeys.MediumURL] as! String)!
+                        flickrPhotoURLs.append(photoURL)
+                    }
+                }
+                completionHandlerForPhotos(flickrPhotoURLs, nil)
+            }
         }
     }
+    
+    func getImage(forURL url: URL, completionHandlerForImage: @escaping (_ image: UIImage) -> Void) -> URLSessionTask? {
+        let request = URLRequest(url: url)
+        return taskForURLRequest(request, completionHandlerForRequest: { (dataObject, error) in
+            print(dataObject)
+        })
+    }
+    
     
     // MARK: Helper for Creating a URL from Parameters
     private func flickrURLFromParameters(_ parameters: [String:AnyObject]) -> URL {

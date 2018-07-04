@@ -10,6 +10,7 @@
 		A60406D120EA94F6009ABFE0 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60406D020EA94F6009ABFE0 /* NetworkManager.swift */; };
 		A60406D320EA9992009ABFE0 /* NetworkManagerConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60406D220EA9992009ABFE0 /* NetworkManagerConvenience.swift */; };
 		A634F42D20EBD8FC00957041 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = A634F42C20EBD8FC00957041 /* .gitignore */; };
+		A634F43020EC2DB700957041 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A634F42F20EC2DB700957041 /* Cell.swift */; };
 		A67CC11B20DC652F007E4C2D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67CC11A20DC652F007E4C2D /* AppDelegate.swift */; };
 		A67CC11D20DC652F007E4C2D /* TravelLocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67CC11C20DC652F007E4C2D /* TravelLocationsViewController.swift */; };
 		A67CC12020DC652F007E4C2D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A67CC11E20DC652F007E4C2D /* Main.storyboard */; };
@@ -40,6 +41,7 @@
 		A60406D020EA94F6009ABFE0 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		A60406D220EA9992009ABFE0 /* NetworkManagerConvenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerConvenience.swift; sourceTree = "<group>"; };
 		A634F42C20EBD8FC00957041 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		A634F42F20EC2DB700957041 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		A67CC11720DC652F007E4C2D /* Virtual Tourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Tourist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A67CC11A20DC652F007E4C2D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A67CC11C20DC652F007E4C2D /* TravelLocationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelLocationsViewController.swift; sourceTree = "<group>"; };
@@ -78,6 +80,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A634F42E20EC2D6E00957041 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				A634F42F20EC2DB700957041 /* Cell.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		A67CC10E20DC652F007E4C2D = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +115,7 @@
 				A67CC13C20DC6751007E4C2D /* Map */,
 				A67CC14320DE905F007E4C2D /* Model */,
 				A67CC14220DE8C4D007E4C2D /* Network */,
+				A634F42E20EC2D6E00957041 /* Protocols */,
 				A67CC11A20DC652F007E4C2D /* AppDelegate.swift */,
 				A67CC11E20DC652F007E4C2D /* Main.storyboard */,
 				A67CC12120DC6532007E4C2D /* Assets.xcassets */,
@@ -276,6 +287,7 @@
 				A67CC11D20DC652F007E4C2D /* TravelLocationsViewController.swift in Sources */,
 				A67CC14920DE965B007E4C2D /* Pin+Extensions.swift in Sources */,
 				A60406D320EA9992009ABFE0 /* NetworkManagerConvenience.swift in Sources */,
+				A634F43020EC2DB700957041 /* Cell.swift in Sources */,
 				A60406D120EA94F6009ABFE0 /* NetworkManager.swift in Sources */,
 				A67CC14620DE9090007E4C2D /* VirtualTourist.xcdatamodeld in Sources */,
 				A67CC14D20DEB4B7007E4C2D /* DataController.swift in Sources */,
