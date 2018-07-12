@@ -11,7 +11,7 @@ import UIKit
 
 extension NetworkManager {
     
-    func getPhotosFor(latitude: Double, longitude: Double, completionHandlerForPhotos: @escaping (_ photoURLs: [URL]?, _ error: NSError?) -> Void) -> URLSessionTask? {
+    func getPhotosFor(latitude: Double, longitude: Double, withPageNumber: Int, completionHandlerForPhotos: @escaping (_ photoURLs: [URL]?, _ withPageNumbers: Int,_ error: NSError?) -> Void) -> URLSessionTask? {
         
         let methodParameters = [
             Constants.FlickrParameterKeys.Method: Constants.FlickrParameterValues.SearchMethod,
@@ -21,31 +21,39 @@ extension NetworkManager {
             Constants.FlickrParameterKeys.Extras: Constants.FlickrParameterValues.MediumURL,
             Constants.FlickrParameterKeys.Format: Constants.FlickrParameterValues.ResponseFormat,
             Constants.FlickrParameterKeys.NoJSONCallback: Constants.FlickrParameterValues.DisableJSONCallback,
-            Constants.FlickrParameterKeys.PerPage: Constants.FlickrParameterValues.PerPage
+            Constants.FlickrParameterKeys.PerPage: Constants.FlickrParameterValues.PerPage,
+            Constants.FlickrParameterKeys.Page: withPageNumber
         ] as [String: AnyObject]
         
         let request = URLRequest(url: flickrURLFromParameters(methodParameters))
-        return taskForURLRequest(request) { (dataObject, error) in
+        return taskForURLRequest(request, responseType: .jsonType) { (dataObject, error) in
             if error != nil {
-                completionHandlerForPhotos(nil,error)
+                completionHandlerForPhotos(nil,0,error)
             } else {
                 var flickrPhotoURLs:[URL] = []
+                var pages: Int = 0
                 if let photos = dataObject?[Constants.FlickrResponseKeys.Photos] as? [String: AnyObject], let photosArray = photos[Constants.FlickrResponseKeys.Photo] as? [[String: AnyObject]] {
+                    pages = photos[Constants.FlickrResponseKeys.Pages] as! Int
                     for photoObject in photosArray {
                         let photoURL = URL(string: photoObject[Constants.FlickrResponseKeys.MediumURL] as! String)!
                         flickrPhotoURLs.append(photoURL)
                     }
                 }
-                completionHandlerForPhotos(flickrPhotoURLs, nil)
+                completionHandlerForPhotos(flickrPhotoURLs, pages ,nil)
             }
         }
     }
     
-    func getImage(forURL url: URL, completionHandlerForImage: @escaping (_ image: UIImage) -> Void) -> URLSessionTask? {
+    func getImage(forURL url: URL, completionHandlerForImage: @escaping (_ image: UIImage?) -> Void) -> URLSessionTask? {
         let request = URLRequest(url: url)
-        return taskForURLRequest(request, completionHandlerForRequest: { (dataObject, error) in
-            print(dataObject)
-        })
+        return taskForURLRequest(request, responseType: .imageType) { (dataObject, error) in
+            if let data = dataObject as? Data {
+                let image = UIImage(data: data)
+                completionHandlerForImage(image)
+            } else {
+                completionHandlerForImage(nil)
+            }
+        }
     }
     
     

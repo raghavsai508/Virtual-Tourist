@@ -14,6 +14,7 @@ class TravelLocationsViewController: UIViewController, NSFetchedResultsControlle
     
     var dataController: DataController!
     var fetchedResultsController: NSFetchedResultsController<Pin>!
+    var pins: [Pin] = []
     
     let photoAlbumIdentifier = "showTravelLocations"
     
@@ -42,12 +43,13 @@ class TravelLocationsViewController: UIViewController, NSFetchedResultsControlle
         let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: "Pins")
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
         do {
             try fetchedResultsController.performFetch()
-            if let pins = fetchedResultsController.fetchedObjects {
-                for pin in pins {
+            if let pinsFetched = fetchedResultsController.fetchedObjects {
+                pins = pinsFetched
+                for pin in pinsFetched {
                     let annotation = TravelAnnotation(travelId: pin.objectID.uriRepresentation().absoluteString, coordinate: CLLocationCoordinate2DMake(pin.latitude, pin.longitude))
                     mapView.addAnnotation(annotation)
                 }
@@ -64,15 +66,17 @@ class TravelLocationsViewController: UIViewController, NSFetchedResultsControlle
             
             let pin = Pin(context: dataController.viewContext)
             let annotation = TravelAnnotation(travelId: pin.objectID.uriRepresentation().absoluteString, coordinate: coordinates)
-            
+            pin.currentPageNumber = 1 // by default set to 1
+            pin.pageNumbers = 1 // by default set to 1
             pin.latitude = annotation.coordinate.latitude
             pin.longitude = annotation.coordinate.longitude
             pin.creationDate = Date()
+            pins.append(pin)
             do {
                 try dataController.viewContext.save()
                 mapView.addAnnotation(annotation)
-            } catch {
-                fatalError("The fetch could not store the location: \(error.localizedDescription)")
+            } catch let error as NSError {
+                fatalError("The fetch could not store the location: \(error.userInfo)")
             }
         }
     }
@@ -80,8 +84,36 @@ class TravelLocationsViewController: UIViewController, NSFetchedResultsControlle
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == photoAlbumIdentifier {
             let photoAlbumViewController = segue.destination as! PhotoAlbumViewController
+//            let travelAnnotation = sender as! TravelAnnotation
+//            let url = URL(string: travelAnnotation.travelId!)!
+//            let pinObjectId = dataController.viewContext.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url)
+//            let pin = dataController.viewContext.object(with: pinObjectId!) as! Pin
+//            do {
+//                let pin = dataController.viewContext.registeredObject(for: pinObjectId!) as! Pin
+//                photoAlbumViewController.dataController = dataController
+//                photoAlbumViewController.travelPin = pin
+//            } catch {
+//                fatalError("The fetch could not store the location: \(error.localizedDescription)")
+//            }
+            
+//            let fetchRequest:NSFetchRequest<Pin> = Pin.fetchRequest()
+//            let predicate = NSPredicate(format: "SELF = %@", pinObjectId!)
+//            fetchRequest.predicate = predicate
+//            let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
+//            fetchRequest.sortDescriptors = [sortDescriptor]
+//
+//            do {
+//                let pins = try dataController.viewContext.fetch(fetchRequest)
+//                for pin in pins {
+//                    photoAlbumViewController.dataController = dataController
+//                    photoAlbumViewController.travelPin = pin
+//                }
+//            } catch {
+//                fatalError("The fetch could not store the location: \(error.localizedDescription)")
+//            }
+            
             photoAlbumViewController.dataController = dataController
-            photoAlbumViewController.travelAnnotation = sender as! TravelAnnotation
+            photoAlbumViewController.travelPin = sender as! Pin
         }
     }
 }
@@ -90,7 +122,13 @@ extension TravelLocationsViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if let travelAnnotation = view.annotation as? TravelAnnotation {
-            performSegue(withIdentifier: photoAlbumIdentifier, sender: travelAnnotation)
+            let annotations = mapView.annotations as! [TravelAnnotation]
+            guard let index = annotations.index(of: travelAnnotation) else {
+                return
+            }
+            
+            let pin = pins[index]
+            performSegue(withIdentifier: photoAlbumIdentifier, sender: pin)
         }
     }
     
@@ -99,8 +137,8 @@ extension TravelLocationsViewController: MKMapViewDelegate {
         let annotationIdentifier = "TravelAnnotationIdentifier"
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: annotationIdentifier)
         if annotationView == nil {
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)        }
-        else {
+            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: annotationIdentifier)
+        } else {
             annotationView!.annotation = annotation
         }
         return annotationView

@@ -10,6 +10,11 @@ import UIKit
 
 class NetworkManager: NSObject {
 
+    enum ResponseType {
+        case jsonType
+        case imageType
+    }
+    
     static let sharedInstance = NetworkManager()
     // shared session
     var session = URLSession.shared
@@ -19,7 +24,7 @@ class NetworkManager: NSObject {
     }
 
     //MARK: URLRequest
-    func taskForURLRequest(_ urlRequest: URLRequest, completionHandlerForRequest: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask? {
+    func taskForURLRequest(_ urlRequest: URLRequest, responseType: ResponseType, completionHandlerForRequest: @escaping (_ result: AnyObject?, _ error: NSError?) -> Void) -> URLSessionDataTask? {
         
         let task = session.dataTask(with: urlRequest as URLRequest) { (data, response, error) in
             
@@ -42,7 +47,7 @@ class NetworkManager: NSObject {
             }
             
             // Parse the data and use the data (happens in completion handler) s
-            self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForRequest)
+            self.convertDataWithCompletionHandler(data, responseType: responseType, completionHandlerForConvertData: completionHandlerForRequest)
         }
         
         /* Start the request */
@@ -52,16 +57,21 @@ class NetworkManager: NSObject {
     }
     
     
-    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
+    private func convertDataWithCompletionHandler(_ data: Data, responseType: ResponseType, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
         
-        var parsedResult: AnyObject! = nil
-        do {
-            parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
-        } catch {
-            let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
-            completionHandlerForConvertData(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
+        switch responseType {
+        case .jsonType:
+            var parsedResult: AnyObject! = nil
+            do {
+                parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
+            } catch {
+                let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
+                completionHandlerForConvertData(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
+            }
+            completionHandlerForConvertData(parsedResult, nil)
+        case .imageType:
+            completionHandlerForConvertData(data as AnyObject, nil)
         }
-    
-        completionHandlerForConvertData(parsedResult, nil)
+        
     }
 }
