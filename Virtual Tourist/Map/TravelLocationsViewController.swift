@@ -65,15 +65,15 @@ class TravelLocationsViewController: UIViewController, NSFetchedResultsControlle
             let coordinates = mapView.convert(mapPoint, toCoordinateFrom: mapView)
             
             let pin = Pin(context: dataController.viewContext)
-            let annotation = TravelAnnotation(travelId: pin.objectID.uriRepresentation().absoluteString, coordinate: coordinates)
             pin.currentPageNumber = 1 // by default set to 1
             pin.pageNumbers = 1 // by default set to 1
-            pin.latitude = annotation.coordinate.latitude
-            pin.longitude = annotation.coordinate.longitude
+            pin.latitude = coordinates.latitude
+            pin.longitude = coordinates.longitude
             pin.creationDate = Date()
-            pins.append(pin)
             do {
                 try dataController.viewContext.save()
+                pins.append(pin)
+                let annotation = TravelAnnotation(travelId: pin.objectID.uriRepresentation().absoluteString, coordinate: coordinates)
                 mapView.addAnnotation(annotation)
             } catch let error as NSError {
                 fatalError("The fetch could not store the location: \(error.userInfo)")
@@ -84,34 +84,6 @@ class TravelLocationsViewController: UIViewController, NSFetchedResultsControlle
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == photoAlbumIdentifier {
             let photoAlbumViewController = segue.destination as! PhotoAlbumViewController
-//            let travelAnnotation = sender as! TravelAnnotation
-//            let url = URL(string: travelAnnotation.travelId!)!
-//            let pinObjectId = dataController.viewContext.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url)
-//            let pin = dataController.viewContext.object(with: pinObjectId!) as! Pin
-//            do {
-//                let pin = dataController.viewContext.registeredObject(for: pinObjectId!) as! Pin
-//                photoAlbumViewController.dataController = dataController
-//                photoAlbumViewController.travelPin = pin
-//            } catch {
-//                fatalError("The fetch could not store the location: \(error.localizedDescription)")
-//            }
-            
-//            let fetchRequest:NSFetchRequest<Pin> = Pin.fetchRequest()
-//            let predicate = NSPredicate(format: "SELF = %@", pinObjectId!)
-//            fetchRequest.predicate = predicate
-//            let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
-//            fetchRequest.sortDescriptors = [sortDescriptor]
-//
-//            do {
-//                let pins = try dataController.viewContext.fetch(fetchRequest)
-//                for pin in pins {
-//                    photoAlbumViewController.dataController = dataController
-//                    photoAlbumViewController.travelPin = pin
-//                }
-//            } catch {
-//                fatalError("The fetch could not store the location: \(error.localizedDescription)")
-//            }
-            
             photoAlbumViewController.dataController = dataController
             photoAlbumViewController.travelPin = sender as! Pin
         }
@@ -121,14 +93,30 @@ class TravelLocationsViewController: UIViewController, NSFetchedResultsControlle
 extension TravelLocationsViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        if let travelAnnotation = view.annotation as? TravelAnnotation {
-            let annotations = mapView.annotations as! [TravelAnnotation]
-            guard let index = annotations.index(of: travelAnnotation) else {
-                return
-            }
+//        if let travelAnnotation = view.annotation as? TravelAnnotation {
+//            let annotations = mapView.annotations as! [TravelAnnotation]
+//            guard let index = annotations.index(of: travelAnnotation) else {
+//                return
+//            }
             
-            let pin = pins[index]
-            performSegue(withIdentifier: photoAlbumIdentifier, sender: pin)
+//            let url = URL(string: travelAnnotation.travelId!)!
+//            let pinObjectId = dataController.viewContext.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url)
+            
+//            let filteredPins = pins.filter{ $0.objectID == pinObjectId }
+//            if filteredPins.count > 0 {
+//                let pin = filteredPins.first
+//                performSegue(withIdentifier: photoAlbumIdentifier, sender: pin)
+//            }
+//        }
+        
+        if let travelAnnotation = view.annotation as? TravelAnnotation {
+            let url = URL(string: travelAnnotation.travelId!)!
+            let pinObjectId = dataController.viewContext.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url)
+            let filteredPins = pins.filter{ $0.objectID == pinObjectId }
+            if filteredPins.count > 0 {
+                let pin = filteredPins.first
+                performSegue(withIdentifier: photoAlbumIdentifier, sender: pin)
+            }
         }
     }
     

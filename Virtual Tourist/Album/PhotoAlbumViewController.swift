@@ -19,6 +19,8 @@ class PhotoAlbumViewController: UIViewController {
     var travelPin: Pin!
     var dataController: DataController!
     
+    var blockOperations: [BlockOperation] = []
+    
     var fetchedResultsController: NSFetchedResultsController<Photo>!
 
     fileprivate let kLeftPadding: CGFloat = 4.5
@@ -92,7 +94,6 @@ class PhotoAlbumViewController: UIViewController {
                     strongSelf.travelPin.currentPageNumber = Int64(pageNumber)
                 }
                 strongSelf.travelPin.pageNumbers = Int64(pages)
-                try? strongSelf.dataController.viewContext.save()
                 
                 if error == nil, let flickrURLS = flickrURLS  {
                     PhotoAlbumViewController.imageDownloadCount = flickrURLS.count
@@ -100,12 +101,13 @@ class PhotoAlbumViewController: UIViewController {
                         let photo = Photo(context: strongSelf.dataController.viewContext)
                         photo.photoUrl = photoURL.absoluteString
                         photo.pin = strongSelf.travelPin
-                        do {
-                            try strongSelf.dataController.viewContext.save()
-                        } catch let error as NSError {
-                            fatalError("The fetch could not store the photo: \(error.userInfo)")
-                        }
                     }
+                    
+                }
+                do {
+                    try strongSelf.dataController.viewContext.save()
+                } catch let error as NSError {
+                    fatalError("The fetch could not store the photo: \(error.userInfo)")
                 }
             }
         }
@@ -121,6 +123,14 @@ class PhotoAlbumViewController: UIViewController {
             getFlickrPhotos()
         }
     }
+    
+    deinit {
+        for operation: BlockOperation in blockOperations {
+            operation.cancel()
+        }
+        blockOperations.removeAll(keepingCapacity: false)
+    }
+
 }
 
 extension PhotoAlbumViewController: MKMapViewDelegate {
@@ -157,15 +167,12 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
             cell.photoImageView.image = image
         } else {
             let networkManager = NetworkManager.sharedInstance
-            let photoId = photo.objectID
             let _ = networkManager.getImage(forURL: URL(string: photo.photoUrl!)!) { (image) in
                 
                 DispatchQueue.main.async {
                     if let image = image {
-                        let photoObject = self.dataController.viewContext.object(with: photoId) as! Photo
                         cell.photoImageView.image = image
-                        photoObject.photo = UIImagePNGRepresentation(image)
-                        try? self.dataController.viewContext.save() 
+                        photo.photo = UIImagePNGRepresentation(image)
                     }
                     PhotoAlbumViewController.imageDownloadCount = PhotoAlbumViewController.imageDownloadCount - 1
                     self.updateImageCollectionButton()
@@ -205,26 +212,54 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
 extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        try? fetchedResultsController.performFetch()
         switch type {
             case .insert:
-                albumCollectionView.insertItems(at: [newIndexPath!])
+                blockOperations.append(BlockOperation(block: { [weak self] in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    strongSelf.albumCollectionView.insertItems(at: [newIndexPath!])
+                }))
                 break
             case .delete:
-                albumCollectionView.deleteItems(at: [indexPath!])
+                blockOperations.append(BlockOperation(block: { [weak self] in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    strongSelf.albumCollectionView.deleteItems(at: [indexPath!])
+                }))
                 break
             case .update, .move:
                 break
         }
     }
     
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        let indexSet = IndexSet(integer: sectionIndex)
-        switch type {
-            case .insert: self.albumCollectionView.insertSections(indexSet)
-            case .delete: self.albumCollectionView.deleteSections(indexSet)
-            case .update, .move:
-                fatalError("Invalid change type in controller(_:didChange:atSectionIndex:for:). Only .insert or .delete should be possible.")
-        }
+//    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+//        let indexSet = IndexSet(integer: sectionIndex)
+//        switch type {
+//            case .insert:
+//            blockOperations.append(BlockOperation(block: { [weak self] in
+//                guard let strongSelf = self else {
+//                    return
+//                }
+//                    strongSelf.albumCollectionView.insertSections(indexSet)
+//            }))
+//
+//            case .delete: self.albumCollectionView.deleteSections(indexSet)
+//            case .update, .move:
+//                fatalError("Invalid change type in controller(_:didChange:atSectionIndex:for:). Only .insert or .delete should be possible.")
+//        }
+//    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        self.albumCollectionView!.performBatchUpdates({ () -> Void in
+            for operation: BlockOperation in self.blockOperations {
+                operation.start()
+            }
+        }, completion: { (finished) -> Void in
+            self.blockOperations.removeAll(keepingCapacity: false)
+        })
     }
 }
 
