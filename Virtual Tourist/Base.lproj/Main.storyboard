@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -72,18 +73,28 @@
                                             <rect key="frame" x="0.0" y="0.0" width="98" height="101"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loading" translatesAutoresizingMaskIntoConstraints="NO" id="afh-Vo-Hzs">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loading" translatesAutoresizingMaskIntoConstraints="NO" id="afh-Vo-Hzs">
                                                     <rect key="frame" x="0.0" y="0.0" width="98" height="101"/>
                                                 </imageView>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="vN1-Nz-VuN">
+                                                    <rect key="frame" x="34" y="35" width="30" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="30" id="3Uq-An-vkH"/>
+                                                        <constraint firstAttribute="width" secondItem="vN1-Nz-VuN" secondAttribute="height" multiplier="1:1" id="jjQ-oU-XMK"/>
+                                                    </constraints>
+                                                </activityIndicatorView>
                                             </subviews>
                                         </view>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="afh-Vo-Hzs" secondAttribute="trailing" id="APp-1G-Ai8"/>
                                             <constraint firstItem="afh-Vo-Hzs" firstAttribute="leading" secondItem="bFv-en-wCO" secondAttribute="leading" id="Eco-CZ-6CS"/>
+                                            <constraint firstItem="vN1-Nz-VuN" firstAttribute="centerX" secondItem="bFv-en-wCO" secondAttribute="centerX" id="T4k-Jr-Nly"/>
+                                            <constraint firstItem="vN1-Nz-VuN" firstAttribute="centerY" secondItem="bFv-en-wCO" secondAttribute="centerY" id="UGh-NO-vev"/>
                                             <constraint firstItem="afh-Vo-Hzs" firstAttribute="top" secondItem="bFv-en-wCO" secondAttribute="top" id="Vhl-rm-6sL"/>
                                             <constraint firstAttribute="bottom" secondItem="afh-Vo-Hzs" secondAttribute="bottom" id="iQd-id-lp5"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="activityIndicator" destination="vN1-Nz-VuN" id="2uR-wK-S9z"/>
                                             <outlet property="photoImageView" destination="afh-Vo-Hzs" id="y9D-nn-xvE"/>
                                         </connections>
                                     </collectionViewCell>

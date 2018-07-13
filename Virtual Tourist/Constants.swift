@@ -13,6 +13,15 @@ import UIKit
 
 struct Constants {
     
+    static let MapStateKey = "mapStateData"
+    
+    //MARK: MapState
+    struct MapState {
+        static let Latitude = "latitude"
+        static let Longitude = "longitude"
+        static let LatitudeDelta = "latitudeDelta"
+        static let LongitudeDelta = "longitudeDelta"
+    }
     
     // MARK: PersistentStore
     struct PersistentStore {

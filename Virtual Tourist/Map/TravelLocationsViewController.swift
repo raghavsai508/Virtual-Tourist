@@ -26,6 +26,11 @@ class TravelLocationsViewController: UIViewController, NSFetchedResultsControlle
         setupFetchedResultsController()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        saveMapState();
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         fetchedResultsController = nil
@@ -36,6 +41,14 @@ class TravelLocationsViewController: UIViewController, NSFetchedResultsControlle
         let longPressGR = UILongPressGestureRecognizer(target: self, action: #selector(addMapAnnotation(gestureRecognizer:)))
         mapView.delegate = self
         mapView.addGestureRecognizer(longPressGR)
+        
+        let userDefaults = UserDefaults.standard
+        if let locationData = userDefaults.value(forKey: Constants.MapStateKey) as? [String: Double] {
+            let span = MKCoordinateSpanMake(locationData[Constants.MapState.LatitudeDelta]!, locationData[Constants.MapState.LongitudeDelta]!)
+            let center = CLLocationCoordinate2DMake(locationData[Constants.MapState.Latitude]!, locationData[Constants.MapState.Longitude]!)
+            let region = MKCoordinateRegionMake(center, span)
+            mapView.setRegion(region, animated: false)
+        }
     }
     
     fileprivate func setupFetchedResultsController() {
@@ -57,6 +70,16 @@ class TravelLocationsViewController: UIViewController, NSFetchedResultsControlle
         } catch {
             fatalError("The fetch could not be performed: \(error.localizedDescription)")
         }
+    }
+    
+    fileprivate func saveMapState() {
+        let userDefaults = UserDefaults.standard
+        let saveLocationState: [String: Double] = [Constants.MapState.Latitude: mapView.centerCoordinate.latitude,
+                                                   Constants.MapState.Longitude: mapView.centerCoordinate.longitude,
+                                                   Constants.MapState.LatitudeDelta: mapView.region.span.latitudeDelta,
+                                                   Constants.MapState.LongitudeDelta: mapView.region.span.longitudeDelta]
+        userDefaults.set(saveLocationState, forKey: Constants.MapStateKey)
+        userDefaults.synchronize()
     }
     
     @objc func addMapAnnotation(gestureRecognizer: UILongPressGestureRecognizer) {
@@ -92,23 +115,7 @@ class TravelLocationsViewController: UIViewController, NSFetchedResultsControlle
 
 extension TravelLocationsViewController: MKMapViewDelegate {
     
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-//        if let travelAnnotation = view.annotation as? TravelAnnotation {
-//            let annotations = mapView.annotations as! [TravelAnnotation]
-//            guard let index = annotations.index(of: travelAnnotation) else {
-//                return
-//            }
-            
-//            let url = URL(string: travelAnnotation.travelId!)!
-//            let pinObjectId = dataController.viewContext.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url)
-            
-//            let filteredPins = pins.filter{ $0.objectID == pinObjectId }
-//            if filteredPins.count > 0 {
-//                let pin = filteredPins.first
-//                performSegue(withIdentifier: photoAlbumIdentifier, sender: pin)
-//            }
-//        }
-        
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {        
         if let travelAnnotation = view.annotation as? TravelAnnotation {
             let url = URL(string: travelAnnotation.travelId!)!
             let pinObjectId = dataController.viewContext.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url)
@@ -132,4 +139,7 @@ extension TravelLocationsViewController: MKMapViewDelegate {
         return annotationView
     }
     
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        saveMapState()
+    }
 }

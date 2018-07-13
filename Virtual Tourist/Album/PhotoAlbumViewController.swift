@@ -167,10 +167,14 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
             cell.photoImageView.image = image
         } else {
             let networkManager = NetworkManager.sharedInstance
+            if !cell.activityIndicator.isAnimating {
+                cell.activityIndicator.startAnimating()
+            }
             let _ = networkManager.getImage(forURL: URL(string: photo.photoUrl!)!) { (image) in
                 
                 DispatchQueue.main.async {
                     if let image = image {
+                        cell.activityIndicator.stopAnimating()
                         cell.photoImageView.image = image
                         photo.photo = UIImagePNGRepresentation(image)
                     }
@@ -200,7 +204,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
     }
     
     func updateImageCollectionButton() {
-        if PhotoAlbumViewController.imageDownloadCount == 0 {
+        if PhotoAlbumViewController.imageDownloadCount <= 0 {
             btnNewCollection.isEnabled = true
         } else {
             btnNewCollection.isEnabled = false
@@ -234,23 +238,6 @@ extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
                 break
         }
     }
-    
-//    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-//        let indexSet = IndexSet(integer: sectionIndex)
-//        switch type {
-//            case .insert:
-//            blockOperations.append(BlockOperation(block: { [weak self] in
-//                guard let strongSelf = self else {
-//                    return
-//                }
-//                    strongSelf.albumCollectionView.insertSections(indexSet)
-//            }))
-//
-//            case .delete: self.albumCollectionView.deleteSections(indexSet)
-//            case .update, .move:
-//                fatalError("Invalid change type in controller(_:didChange:atSectionIndex:for:). Only .insert or .delete should be possible.")
-//        }
-//    }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.albumCollectionView!.performBatchUpdates({ () -> Void in
