@@ -73,7 +73,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="98" height="101"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loading" translatesAutoresizingMaskIntoConstraints="NO" id="afh-Vo-Hzs">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="afh-Vo-Hzs">
                                                     <rect key="frame" x="0.0" y="0.0" width="98" height="101"/>
                                                 </imageView>
                                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="vN1-Nz-VuN">
@@ -153,7 +153,4 @@
             <point key="canvasLocation" x="-591" y="117"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="loading" width="46" height="46"/>
-    </resources>
 </document>
